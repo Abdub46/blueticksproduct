@@ -25,7 +25,9 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
-  ssl: { rejectUnauthorized: false }
+  ssl: process.env.DB_HOST.includes("supabase")
+    ? { rejectUnauthorized: false }
+    : false
 });
 
 // Simple DB test (safe)
