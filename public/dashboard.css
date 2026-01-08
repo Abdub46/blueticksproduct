@@ -1,0 +1,97 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===== BODY ===== */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f4f6f8;
+  padding: 30px;
+  color: #333;
+}
+
+/* ===== TITLE ===== */
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #2c3e50;
+}
+
+/* ===== TABLE ===== */
+table {
+  width: 100%;
+  max-width: 1000px;
+  margin: auto;
+  border-collapse: collapse;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* ===== TABLE HEADER ===== */
+thead {
+  background: #007bff;
+}
+
+th {
+  color: #ffffff;
+  text-transform: uppercase;
+  font-size: 14px;
+  padding: 14px;
+  text-align: left;
+}
+
+/* ===== TABLE BODY ===== */
+td {
+  padding: 14px;
+  font-size: 14px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+/* ===== ROW HOVER ===== */
+tbody tr:hover {
+  background: #f1f7ff;
+  transition: background 0.3s ease;
+}
+
+/* ===== LAST ROW FIX ===== */
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ===== RESPONSIVE (MOBILE) ===== */
+@media (max-width: 768px) {
+
+  body {
+    padding: 15px;
+  }
+
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ddd;
+  }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+  }
+
+  td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: #555;
+  }
+}
