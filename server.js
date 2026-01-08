@@ -34,6 +34,7 @@ requiredEnv.forEach(key => {
 /* =======================
    POSTGRESQL CONNECTION
 ======================= */
+const isSupabase = process.env.DB_HOST.includes("supabase");
 const pool = new Pool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
