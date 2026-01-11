@@ -1,25 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Registration</title>
-  <link rel="stylesheet" href="styles.css">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4f7cff">
+
+  <link rel="stylesheet" href="student.css">
 </head>
 <body>
 
-<h2>Student Registration</h2>
+  <!-- DARK MODE TOGGLE -->
+  <div class="theme-toggle">
+    <label>
+      <input type="checkbox" id="darkModeToggle">
+      Dark Mode
+    </label>
+  </div>
 
-<form id="studentForm">
-  <input id="name" placeholder="Name" required>
-  <input id="department" placeholder="Department" required>
-  <input id="phone" placeholder="Phone Number" required>
-  <button>Submit</button>
-  <p id="msg"></p>
-  
-</form>
+  <!-- PAGE HEADING -->
+  <h2>Student Registration</h2>
 
-<a href="dashboard.html">View History</a>
+  <!-- FORM -->
+  <form id="studentForm">
+    <input id="name" placeholder="Name" required>
+    <input id="department" placeholder="Department" required>
+    <input id="phone" placeholder="Phone Number" required>
+    <button type="submit">Submit</button>
+    <p id="msg"></p>
+  </form>
 
+  <a href="dashboard.html">View History</a>
 
-<script src="student.js"></script>
+  <script src="student.js"></script>
+  <script src="sw-register.js"></script>
 </body>
 </html>
