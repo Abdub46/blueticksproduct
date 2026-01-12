@@ -1,5 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+  /* ===============================
+     FORM SUBMISSION (UNCHANGED)
+  ================================ */
   const form = document.getElementById("studentForm");
   const msg = document.getElementById("msg");
 
@@ -35,5 +38,32 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(err);
     }
   });
+
+
+  /* ===============================
+     DARK / LIGHT MODE TOGGLE
+  ================================ */
+
+  const themeToggle = document.getElementById("themeToggle");
+  const themeIcon = document.getElementById("themeIcon");
+
+  // Load saved theme
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark-mode");
+    if (themeIcon) themeIcon.textContent = "☀️";
+  }
+
+  // Toggle theme on click
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+
+      const isDark = document.body.classList.contains("dark-mode");
+      if (themeIcon) themeIcon.textContent = isDark ? "☀️" : "🌙";
+
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+    });
+  }
 
 });
