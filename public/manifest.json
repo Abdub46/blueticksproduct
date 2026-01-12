@@ -1,7 +1,7 @@
 {
   "name": "BlueTicks",
   "short_name": "BlueTicks",
-  "start_url": "./student.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0ea5a3",
