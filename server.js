@@ -10,21 +10,20 @@ const app = express();
    MIDDLEWARE
 ======================= */
 app.use(cors({
-  origin: "*", // allow frontend anywhere (safe for now)
+  origin: "*",
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"]
 }));
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true }));
 
-// Serve frontend files
+// Serve frontend
 app.use(express.static(path.join(__dirname, "public")));
 
 /* =======================
    ENV VALIDATION
 ======================= */
-const requiredEnv = ["DB_HOST", "DB_USER", "DB_PASSWORD", "DB_NAME", "DB_PORT"];
-requiredEnv.forEach(key => {
+["DB_HOST", "DB_USER", "DB_PASSWORD", "DB_NAME", "DB_PORT"].forEach(key => {
   if (!process.env[key]) {
     console.error(`❌ Missing environment variable: ${key}`);
     process.exit(1);
@@ -41,12 +40,10 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   port: Number(process.env.DB_PORT),
-  ssl: {
-    rejectUnauthorized: false
-  }
+  ssl: { rejectUnauthorized: false }
 });
 
-// Test DB connection with full logging
+// Test DB connection
 (async () => {
   try {
     const result = await pool.query("SELECT current_database(), current_user");
@@ -68,47 +65,58 @@ app.get("/", (req, res) => {
   res.json({ status: "OK", message: "Server is running ✅" });
 });
 
-// Insert student
-app.post("/student", async (req, res) => {
-  const { name, department, phone } = req.body;
+// Insert nutrition record
+app.post("/nutrition", async (req, res) => {
+  const {
+    name,
+    gender,
+    age,
+    weight,
+    height,
+    bmi,
+    category,
+    ideal_weight,
+    energy
+  } = req.body;
 
-  if (!name || !department || !phone) {
+  // Basic validation
+  if (!name || !gender || !age || !weight || !height || !bmi || !category || !energy) {
     return res.status(400).json({ message: "All fields are required ❌" });
   }
 
   try {
     const result = await pool.query(
-      `INSERT INTO students (name, department, phone)
-       VALUES ($1, $2, $3)
-       RETURNING id, name, department, phone, created_at`,
-      [name.trim(), department.trim(), phone.trim()]
+      `INSERT INTO nutrition_history
+       (name, gender, age, weight, height, bmi, category, ideal_weight, energy)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+       RETURNING id, name, gender, age, weight, height, bmi, category, ideal_weight, energy, created_at`,
+      [name.trim(), gender, age, weight, height, bmi, category, ideal_weight, energy]
     );
 
-    console.log("✅ Inserted student:", result.rows[0]);
     res.status(201).json({
-      message: "Student saved successfully ✅",
-      student: result.rows[0]
+      message: "Nutrition record saved successfully ✅",
+      record: result.rows[0]
     });
   } catch (err) {
     console.error("❌ Insert error FULL:", err);
     res.status(500).json({
-      message: "Failed to save student ❌",
+      message: "Failed to save nutrition record ❌",
       error: err.message
     });
   }
 });
 
-// Fetch students
-app.get("/students", async (req, res) => {
+// Fetch all nutrition records
+app.get("/nutrition", async (req, res) => {
   try {
     const result = await pool.query(
-      "SELECT id, name, department, phone, created_at FROM students ORDER BY id DESC"
+      "SELECT id, name, gender, age, weight, height, bmi, category, ideal_weight, energy, created_at FROM nutrition_history ORDER BY created_at DESC"
     );
     res.json(result.rows);
   } catch (err) {
     console.error("❌ Fetch error FULL:", err);
     res.status(500).json({
-      message: "Failed to fetch students ❌",
+      message: "Failed to fetch nutrition records ❌",
       error: err.message
     });
   }

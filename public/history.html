@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nutrition History | BlueTicks</title>
+
+  <!-- Viewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- PWA -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#0ea5a3">
+
+  <!-- Icons -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="history.css">
+</head>
+
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">BlueTicks</a>
+  </nav>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="history-app">
+
+    <h2>Nutrition History</h2>
+
+    <!-- History will be injected here -->
+    <div id="historyList" class="history-list">
+      <p class="loading">Loading records...</p>
+    </div>
+
+    <!-- Back action -->
+    <div class="history-actions">
+      <a href="index.html" class="back-btn">
+        <span class="material-symbols-outlined">
+          arrow_circle_left
+        </span>
+        Back to Calculator
+      </a>
+    </div>
+
+  </main>
+
+  <!-- ===== SCRIPT ===== -->
+  <script type="module" src="history.js"></script>
+
+
+</body>
+</html>
+
+
