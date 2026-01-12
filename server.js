@@ -9,13 +9,11 @@ const app = express();
 /* =======================
    MIDDLEWARE
 ======================= */
-app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"]
-}));
+app.use(cors({ origin: "*", methods: ["GET", "POST"], allowedHeaders: ["Content-Type"] }));
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true }));
+
+// Serve frontend
 app.use(express.static(path.join(__dirname, "public")));
 
 /* =======================
@@ -61,7 +59,7 @@ app.get("/", (req, res) => {
   res.json({ status: "OK", message: "Server is running ✅" });
 });
 
-// POST: Insert nutrition record
+// POST nutrition record
 app.post("/nutrition", async (req, res) => {
   const {
     name,
@@ -94,35 +92,20 @@ app.post("/nutrition", async (req, res) => {
     });
   } catch (err) {
     console.error("❌ Insert error:", err);
-    res.status(500).json({
-      message: "Failed to save nutrition record ❌",
-      error: err.message
-    });
+    res.status(500).json({ message: "Failed to save record ❌", error: err.message });
   }
 });
 
-// GET: Fetch all nutrition records
+// GET all nutrition records
 app.get("/nutrition", async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT id, name, gender, age, weight, height, bmi, category, ideal_weight, energy, created_at
-       FROM nutrition_history
-       ORDER BY created_at DESC`
+      `SELECT * FROM nutrition_history ORDER BY created_at DESC`
     );
     res.json(result.rows);
   } catch (err) {
     console.error("❌ Fetch error:", err);
-    res.status(500).json({ message: "Failed to fetch records", error: err.message });
-  }
-});
-
-// Optional debug route
-app.get("/db-info", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT current_database(), current_user");
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: "Failed to fetch records ❌", error: err.message });
   }
 });
 
@@ -138,7 +121,4 @@ app.use((err, req, res, next) => {
    START SERVER
 ======================= */
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
-
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
