@@ -1,35 +1,50 @@
-data.forEach(record => {
-  const card = document.createElement("div");
-  card.className = "history-card";
+document.addEventListener("DOMContentLoaded", async () => {
+  const historyList = document.getElementById("historyList");
 
-  // Determine category class
-  let catClass = "";
-  switch(record.category.toLowerCase()) {
-    case "underweight": catClass = "underweight"; break;
-    case "normal weight": catClass = "normal"; break;
-    case "overweight": catClass = "overweight"; break;
-    case "obese": catClass = "obese"; break;
+  if (!historyList) {
+    console.error("❌ historyList element not found");
+    return;
   }
 
-  card.innerHTML = `
-    <div class="card-header">
-      <strong>${record.name}</strong>
-      <span class="category-badge ${catClass}">
-        ${record.category}
-      </span>
-    </div>
+  historyList.innerHTML = "<p>Loading records...</p>";
 
-    <div class="card-body">
-      <p><b>Gender:</b> ${record.gender}</p>
-      <p><b>Age:</b> ${record.age}</p>
-      <p><b>Weight:</b> ${record.weight} kg</p>
-      <p><b>Height:</b> ${record.height} cm</p>
-      <p><b>BMI:</b> ${record.bmi}</p>
-      ${record.ideal_weight ? `<p><b>Ideal Weight:</b> ${record.ideal_weight} kg</p>` : ""}
-      <p><b>Energy:</b> ${record.energy} kcal/day</p>
-      <p class="date">${new Date(record.created_at).toLocaleDateString()}</p>
-    </div>
-  `;
+  try {
+    const res = await fetch("/nutrition");
 
-  historyList.appendChild(card);
+    if (!res.ok) {
+      throw new Error(`Server error: ${res.status}`);
+    }
+
+    const data = await res.json();
+
+    if (!Array.isArray(data) || data.length === 0) {
+      historyList.innerHTML = "<p>No nutrition records found</p>";
+      return;
+    }
+
+    historyList.innerHTML = "";
+
+    data.forEach(r => {
+      const div = document.createElement("div");
+      div.className = "history-card";
+
+      div.innerHTML = `
+        <p><b>Name:</b> ${r.name}</p>
+        <p><b>Gender:</b> ${r.gender}</p>
+        <p><b>Age:</b> ${r.age}</p>
+        <p><b>Weight:</b> ${r.weight} kg</p>
+        <p><b>Height:</b> ${r.height} cm</p>
+        <p><b>BMI:</b> ${r.bmi} (${r.category})</p>
+        ${r.ideal_weight ? `<p><b>Ideal:</b> ${r.ideal_weight} kg</p>` : ""}
+        <p><b>Energy:</b> ${r.energy} kcal/day</p>
+        <small>${new Date(r.created_at).toLocaleString()}</small>
+      `;
+
+      historyList.appendChild(div);
+    });
+
+  } catch (err) {
+    console.error("❌ History load failed:", err);
+    historyList.innerHTML = "<p>Failed to load history ❌</p>";
+  }
 });
