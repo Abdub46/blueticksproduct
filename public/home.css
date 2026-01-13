@@ -1,205 +1,280 @@
-/* ===== RESET ===== */
+/* =========================
+   ROOT VARIABLES
+========================= */
+:root {
+  --primary: #0ea5a3;
+  --primary-dark: #028a89;
+  --bg: #f5f7fb;
+  --text: #0f172a;
+  --muted: #64748b;
+  --card-bg: #ffffff;
+  --radius: 16px;
+  --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================
+   RESET
+========================= */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Poppins", system-ui, sans-serif;
 }
 
-/* ===== BODY & ROOT ===== */
 html, body {
-  height: 100%;
   width: 100%;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #f5f7fb;
-  overflow-x: hidden;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  scroll-behavior: smooth;
 }
 
-/* ===== NAVBAR (STICKY) ===== */
+/* =========================
+   NAVBAR
+========================= */
 .navbar {
   position: sticky;
   top: 0;
   z-index: 1000;
-  height: 60px;
+  background: #fff;
   display: flex;
   align-items: center;
-  padding: 0 16px;
-  background: #0ea5a3;
-  color: white;
+  justify-content: space-between;
+  padding: 14px 20px;
+  box-shadow: var(--shadow);
 }
 
 .nav-brand {
-  color: white;
-  text-decoration: none;
-  font-size: clamp(1rem, 2.5vw, 1.3rem);
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--primary);
 }
 
-/* ===== APP WRAPPER ===== */
-.app {
-  min-height: calc(100vh - 60px);
-  width: 100%;
+.menu-btn {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text);
+}
+
+/* =========================
+   FULLSCREEN MENU
+========================= */
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.95);
   display: flex;
+  align-items: center;
   justify-content: center;
-  padding: 16px;
+  transform: translateY(-100%);
+  transition: transform 0.35s ease;
+  z-index: 2000;
 }
 
-/* ===== MAIN CARD ===== */
-.container {
-  width: 100%;
-  max-width: 520px;        /* better desktop width */
-  min-width: 280px;        /* safe for very small phones */
-  background: #ffffff;
-  border-radius: 16px;
-  padding: clamp(16px, 4vw, 24px);
+.menu-overlay.show {
+  transform: translateY(0);
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.menu-links {
   display: flex;
   flex-direction: column;
-  /*gap: 14px;*/
-  row-gap: 50px;
+  gap: 24px;
+  text-align: center;
 }
 
-/* ===== HEADINGS ===== */
-#greet {
+.menu-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.menu-links a:hover {
+  color: var(--primary);
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+.hero {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  font-size: clamp(1.2rem, 4vw, 1.5rem);
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #e6fffa, #f0fdfa);
+}
+
+.hero h1 {
+  font-size: clamp(2.4rem, 5vw, 3.5rem);
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 16px;
+}
+
+.hero p {
+  max-width: 700px;
+  font-size: 1rem;
+  color: var(--muted);
+  margin-bottom: 30px;
+  line-height: 1.7;
+}
+
+.cta-btn {
+  padding: 14px 28px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: var(--shadow);
+  transition: background 0.25s, transform 0.25s;
+}
+
+.cta-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+/* =========================
+   FEATURES SECTION
+========================= */
+.features {
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.features h2 {
+  text-align: center;
+  font-size: 2rem;
   margin-bottom: 50px;
 }
 
-/* ===== FORM ELEMENTS ===== */
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-label {
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-input, select {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  font-size: 1rem;
-}
-
-/* ===== SIDE-BY-SIDE ROWS ===== */
-.form-row {
+.feature-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
 }
 
-.form-row > div {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.feature-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 30px 24px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  transition: transform 0.25s;
 }
 
-/* ===== BUTTON ===== */
-#btn {
-  margin-top: 12px;
-  padding: 14px;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 12px;
-  background: #0ea5a3;
-  color: white;
-  cursor: pointer;
-  width: 100%;
+.feature-card:hover {
+  transform: translateY(-6px);
 }
 
-/* ===== RESULTS ===== */
-#result, #ideal, #energy {
+.feature-card i {
+  font-size: 2.2rem;
+  color: var(--primary);
+  margin-bottom: 18px;
+}
+
+.feature-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+
+.feature-card p {
   font-size: 0.95rem;
-  line-height: 1.5;
+  color: var(--muted);
+  line-height: 1.6;
 }
 
-/* ===== LINK ===== */
-a {
-  text-decoration: none;
-  font-weight: 500;
-  color: #0ea5a3;
+/* =========================
+   ABOUT SECTION
+========================= */
+.about {
+  background: #fff;
+  padding: 80px 20px;
+}
+
+.about-content {
+  max-width: 900px;
+  margin: auto;
   text-align: center;
 }
 
-/* ===== LARGE SCREENS (DESKTOP) ===== */
+.about-content h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.about-content p {
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* =========================
+   FOOTER
+========================= */
+.app-footer {
+  background: #0f172a;
+  color: #cbd5f5;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.app-footer .divider {
+  margin-bottom: 10px;
+}
+
+.brand-link {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.version {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+/* =========================
+   RESPONSIVE TWEAKS
+========================= */
+@media (min-width: 768px) {
+  .menu-btn {
+    font-size: 1.7rem;
+  }
+
+  .hero p {
+    font-size: 1.05rem;
+  }
+}
+
 @media (min-width: 1024px) {
-  .container {
-    max-width: 640px;
-  }
-}
-
-
-
-
-
-
-
-/* ===============================
-   SMOOTH APP ANIMATIONS
-================================ */
-
-/* App entrance */
-.app {
-  animation: appFade 0.6s ease-out both;
-}
-
-@keyframes appFade {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Input focus animation */
-input:focus, select:focus {
-  outline: none;
-  border-color: #0ea5a3;
-  box-shadow: 0 0 0 3px rgba(14, 165, 163, 0.2);
-  transition: box-shadow 0.25s ease, border-color 0.25s ease;
-}
-
-/* Button interaction */
-#btn {
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-#btn:hover {
-  box-shadow: 0 8px 20px rgba(14, 165, 163, 0.25);
-}
-
-#btn:active {
-  transform: scale(0.97);
-  box-shadow: 0 4px 10px rgba(14, 165, 163, 0.2);
-}
-
-/* Result reveal animation */
-#result, #ideal, #energy {
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-.show-result {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
-
-/* Soft card hover (desktop only) */
-@media (hover: hover) {
-  .container {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  .features {
+    padding: 100px 20px;
   }
 
-  .container:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  .about {
+    padding: 100px 20px;
   }
 }
