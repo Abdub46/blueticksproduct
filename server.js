@@ -1,3 +1,5 @@
+
+
 require("dotenv").config();
 const express = require("express");
 const { Pool } = require("pg");
@@ -28,6 +30,9 @@ if (!process.env.DATABASE_URL) {
   console.error("❌ Missing DATABASE_URL in environment variables");
   process.exit(1);
 }
+
+
+
 
 /* =======================
    POSTGRES (SUPABASE POOLER)
