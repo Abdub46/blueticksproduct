@@ -9,7 +9,12 @@ const app = express();
 /* =======================
    MIDDLEWARE
 ======================= */
-app.use(cors({ origin: "*", methods: ["GET", "POST"], allowedHeaders: ["Content-Type"] }));
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "DELETE"],
+  allowedHeaders: ["Content-Type"]
+}));
+
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true }));
 
@@ -17,43 +22,31 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 /* =======================
-   ENV VALIDATION
+   ENV VALIDATION (POOLER)
 ======================= */
-["DB_HOST", "DB_USER", "DB_PASSWORD", "DB_NAME", "DB_PORT"].forEach(key => {
-  if (!process.env[key]) {
-    console.error(`❌ Missing environment variable: ${key}`);
-    process.exit(1);
-  }
-});
+if (!process.env.DATABASE_URL) {
+  console.error("❌ Missing DATABASE_URL in environment variables");
+  process.exit(1);
+}
 
 /* =======================
-   POSTGRESQL CONNECTION
+   POSTGRES (SUPABASE POOLER)
 ======================= */
-const isProduction = process.env.NODE_ENV === "production";
-
-
 const pool = new Pool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT,
-  //port: 5432,
-
- // Number(process.env.DB_PORT),
+  connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
-
-  //ssl: isProduction ? { rejectUnauthorized: false } : false
 });
 
 // Test DB connection
 (async () => {
   try {
-    const result = await pool.query("SELECT current_database(), current_user");
-    console.log("✅ Connected to PostgreSQL");
+    const result = await pool.query(
+      "SELECT current_database(), current_user"
+    );
+    console.log("✅ Connected via Supabase Transaction Pooler");
     console.log("📚 Database info:", result.rows[0]);
   } catch (err) {
-    console.error("❌ DB connection error:", err);
+    console.error("❌ DB connection error:", err.message);
     process.exit(1);
   }
 })();
@@ -67,7 +60,7 @@ app.get("/", (req, res) => {
   res.json({ status: "OK", message: "Server is running ✅" });
 });
 
-// POST nutrition record
+// INSERT nutrition record
 app.post("/nutrition", async (req, res) => {
   const {
     name,
@@ -86,51 +79,61 @@ app.post("/nutrition", async (req, res) => {
   }
 
   try {
-    const result = await pool.query(
+    const { rows } = await pool.query(
       `INSERT INTO nutrition_history
        (name, gender, age, weight, height, bmi, category, ideal_weight, energy)
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
        RETURNING *`,
-      [name.trim(), gender, age, weight, height, bmi, category, ideal_weight, energy]
+      [
+        name.trim(),
+        gender,
+        age,
+        weight,
+        height,
+        bmi,
+        category,
+        ideal_weight,
+        energy
+      ]
     );
 
     res.status(201).json({
       message: "Nutrition record saved successfully ✅",
-      record: result.rows[0]
+      record: rows[0]
     });
   } catch (err) {
-    console.error("❌ Insert error:", err);
-    res.status(500).json({ message: "Failed to save record ❌", error: err.message });
+    console.error("❌ Insert error:", err.message);
+    res.status(500).json({ message: "Failed to save record ❌" });
   }
 });
 
-// GET all nutrition records
+// FETCH nutrition history
 app.get("/nutrition", async (req, res) => {
   try {
-    const result = await pool.query(
-      `SELECT * FROM nutrition_history ORDER BY created_at DESC`
+    const { rows } = await pool.query(
+      `SELECT * FROM nutrition_history
+       ORDER BY created_at DESC`
     );
-    res.json(result.rows);
+    res.json(rows);
   } catch (err) {
-    console.error("❌ Fetch error:", err);
-    res.status(500).json({ message: "Failed to fetch records ❌", error: err.message });
+    console.error("❌ Fetch error:", err.message);
+    res.status(500).json({ message: "Failed to fetch records ❌" });
   }
 });
 
-
-//Delete records
+// DELETE nutrition record (server-side delete)
 app.delete("/nutrition/:id", async (req, res) => {
   try {
     await pool.query(
       "DELETE FROM nutrition_history WHERE id = $1",
       [req.params.id]
     );
-    res.json({ message: "Deleted" });
+    res.json({ message: "Record deleted ✅" });
   } catch (err) {
-    res.status(500).json({ message: "Delete failed" });
+    console.error("❌ Delete error:", err.message);
+    res.status(500).json({ message: "Delete failed ❌" });
   }
 });
-
 
 /* =======================
    GLOBAL ERROR HANDLER
@@ -144,4 +147,6 @@ app.use((err, req, res, next) => {
    START SERVER
 ======================= */
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () =>
+  console.log(`🚀 Server running on port ${PORT}`)
+);
