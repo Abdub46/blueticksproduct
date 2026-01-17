@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Notes</title>
+  <link rel="stylesheet" href="notes.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<header class="navbar">
+  <a href="home.html" class="nav-brand">BlueTicks</a>
+</header>
+
+<main class="notes-container">
+
+  <h2>My Notes</h2>
+
+  <!-- 🔍 Search Notes -->
+  <input 
+    type="text" 
+    id="searchNotes" 
+    placeholder="Search notes..."
+  >
+
+  <!-- 📅 Filter by Date -->
+  <input 
+    type="date" 
+    id="dateFilter"
+  >
+
+  <!-- ✍️ Write Note -->
+  <textarea 
+    id="noteText" 
+    placeholder="Write your note here..."
+  ></textarea>
+
+  <!-- 💾 Save Note -->
+  <button id="saveNote">Save Note</button>
+
+  <!-- 📤 Export -->
+  <button id="exportPDF">📤 Export to PDF</button>
+
+  <h3>Saved Notes</h3>
+
+  <!-- 📒 Notes List -->
+  <ul id="notesList"></ul>
+
+</main>
+
+<script src="notes.js"></script>
+</body>
+</html>

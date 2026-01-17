@@ -1,0 +1,206 @@
+/* =====================
+   GLOBAL RESET & BASE
+===================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    background: #f4f7fb;
+    color: #333;
+    line-height: 1.7;
+}
+
+
+
+
+/* =====================
+   NAVBAR WITH SEARCH
+===================== */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #6eb5c4;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.nav-brand {
+    color: #FFFFFF;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+/* Search inside navbar */
+.nav-search {
+    flex: 1;
+    max-width: 420px;
+    padding: 10px 14px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    font-size: 0.9rem;
+}
+
+.nav-search::placeholder {
+    color: #777;
+}
+
+.nav-search:focus {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* =====================
+   SEARCH BOX
+===================== *
+.search-box {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    background: #ffffff;
+    
+}
+
+.search-box input {
+    width: 100%;
+    max-width: 500px;
+    padding: 12px 16px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+    border-color: #0b5ed7;
+    box-shadow: 0 0 0 2px rgba(11, 94, 215, 0.15);
+}*/
+
+
+
+
+
+
+/* =====================
+   MAIN HEADER
+===================== */
+.main-contents {
+    text-align: center;
+    padding: 30px 20px 10px;
+}
+
+.main-contents h1 {
+    font-size: 1.6rem;
+    color: #0b5ed7;
+    margin-bottom: 8px;
+}
+
+.main-contents h6 {
+    font-size: 0.85rem;
+    color: #777;
+    font-weight: normal;
+}
+
+/* =====================
+   CONTENT CARD
+===================== */
+.note {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 25px 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* =====================
+   HEADINGS
+===================== */
+.note h2 {
+    color: #0b5ed7;
+    margin-bottom: 10px;
+    font-size: 1.35rem;
+}
+
+.note h3 {
+    margin-top: 10px;
+    font-size: 1.05rem;
+    color: #444;
+}
+
+.note h4 {
+    margin-top: 15px;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    color: #222;
+}
+
+/* =====================
+   PARAGRAPHS & LISTS
+===================== */
+.note p {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+}
+
+.note b {
+    color: #000;
+}
+
+.list {
+    font-weight: 600;
+    color: #0b5ed7;
+}
+
+/* Google Font class */
+.redressed-regular {
+    font-family: "Redressed", cursive;
+    font-size: 1.05rem;
+}
+
+/* =====================
+   SEPARATOR
+===================== */
+hr {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 25px 0;
+}
+
+/* =====================
+   RESPONSIVENESS
+===================== */
+@media (min-width: 768px) {
+    .main-contents h1 {
+        font-size: 1.9rem;
+    }
+
+    .note {
+        padding: 30px;
+    }
+
+    .note p {
+        font-size: 1rem;
+    }
+}
